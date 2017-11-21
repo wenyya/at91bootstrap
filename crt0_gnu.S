@@ -111,9 +111,11 @@ _relocate_to_sram:
 	bcc     1b
 #endif /* CONFIG_FLASH */
 
+#ifndef SAMA5D2
 	ldr     r4, = lowlevel_clock_init
 	mov     lr, pc
 	bx      r4
+#endif
 
 #if defined(CONFIG_CPU_V7)
 /* Clear Abort condition if it is pending with help of the abort handler */
@@ -156,6 +158,12 @@ _init_mon:
         ldrcc    r2, [r1], #4
         strcc    r2, [r3], #4
         bcc      1b
+#endif
+
+#ifdef SAMA5D2
+	ldr     r4, = lowlevel_clock_init
+	mov     lr, pc
+	bx      r4
 #endif
 
 /* Branch on C code Main function (with interworking) */
